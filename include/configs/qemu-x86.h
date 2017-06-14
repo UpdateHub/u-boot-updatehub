@@ -61,4 +61,37 @@
 #define CONFIG_SPL_BOARD_LOAD_IMAGE
 #define BOOT_DEVICE_BOARD		11
 
+/*
+ * UpdateHub configuration
+ */
+
+#define CONFIG_BOOTCOUNT_ENV
+
+/* Environment */
+#undef CONFIG_ENV_IS_NOWHERE
+#define CONFIG_ENV_IS_IN_FAT
+#define FAT_ENV_INTERFACE       "ide"
+#define FAT_ENV_DEVICE_AND_PART "0:1"
+#define FAT_ENV_FILE            "u-boot.env"
+#define CONFIG_FAT_WRITE
+
+#define UPDATEHUB_LOAD_OS_A     "load ide 0:2 ${loadaddr} /boot/bzImage"
+#define UPDATEHUB_FIND_ROOT_A   "part uuid ide 0:2 uuid"
+
+#define UPDATEHUB_LOAD_OS_B     "load ide 0:3 ${loadaddr} /boot/bzImage"
+#define UPDATEHUB_FIND_ROOT_B   "part uuid ide 0:3 uuid"
+
+#define UPDATEHUB_BOOTARGS      "root=PARTUUID=${uuid} rootwait ro console=${consoledev}"
+#define UPDATEHUB_BOOTCMD       "zboot ${loadaddr}"
+
+#include <configs/updatehub-common.h>
+
+#undef CONFIG_EXTRA_ENV_SETTINGS
+#define CONFIG_EXTRA_ENV_SETTINGS			\
+	CONFIG_STD_DEVICES_SETTINGS			\
+	"pciconfighost=1\0"				\
+	"consoledev=ttyS0\0"				\
+	CONFIG_OTHBOOTARGS				\
+	UPDATEHUB_ENV
+
 #endif	/* __CONFIG_H */
