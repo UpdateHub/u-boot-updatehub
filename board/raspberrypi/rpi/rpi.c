@@ -127,12 +127,12 @@ static const struct rpi_model rpi_models_new_scheme[] = {
 	},
 	[0x9] = {
 		"Zero",
-		DTB_DIR "bcm2835-rpi-zero.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		false,
 	},
 	[0xA] = {
 		"Compute Module 3",
-		DTB_DIR "bcm2837-rpi-cm3.dtb",
+		DTB_DIR "bcm2710-rpi-cm3.dtb",
 		false,
 	},
 	[0xC] = {
@@ -142,7 +142,7 @@ static const struct rpi_model rpi_models_new_scheme[] = {
 	},
 	[0xD] = {
 		"3 Model B+",
-		DTB_DIR "bcm2837-rpi-3-b-plus.dtb",
+		DTB_DIR "bcm2710-rpi-3-b-plus.dtb",
 		true,
 	},
 };
