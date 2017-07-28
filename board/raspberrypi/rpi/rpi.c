@@ -92,17 +92,17 @@ static const struct rpi_model rpi_model_unknown = {
 static const struct rpi_model rpi_models_new_scheme[] = {
 	[0x4] = {
 		"2 Model B",
-		DTB_DIR "bcm2836-rpi-2-b.dtb",
+		DTB_DIR "bcm2709-rpi-2-b.dtb",
 		true,
 	},
 	[0x8] = {
 		"3 Model B",
-		DTB_DIR "bcm2837-rpi-3-b.dtb",
+		DTB_DIR "bcm2710-rpi-3-b.dtb",
 		true,
 	},
 	[0x9] = {
 		"Zero",
-		DTB_DIR "bcm2835-rpi-zero.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		false,
 	},
 };
@@ -110,27 +110,27 @@ static const struct rpi_model rpi_models_new_scheme[] = {
 static const struct rpi_model rpi_models_old_scheme[] = {
 	[0x2] = {
 		"Model B",
-		DTB_DIR "bcm2835-rpi-b.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0x3] = {
 		"Model B",
-		DTB_DIR "bcm2835-rpi-b.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0x4] = {
 		"Model B rev2",
-		DTB_DIR "bcm2835-rpi-b-rev2.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0x5] = {
 		"Model B rev2",
-		DTB_DIR "bcm2835-rpi-b-rev2.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0x6] = {
 		"Model B rev2",
-		DTB_DIR "bcm2835-rpi-b-rev2.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0x7] = {
@@ -150,22 +150,22 @@ static const struct rpi_model rpi_models_old_scheme[] = {
 	},
 	[0xd] = {
 		"Model B rev2",
-		DTB_DIR "bcm2835-rpi-b-rev2.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0xe] = {
 		"Model B rev2",
-		DTB_DIR "bcm2835-rpi-b-rev2.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0xf] = {
 		"Model B rev2",
-		DTB_DIR "bcm2835-rpi-b-rev2.dtb",
+		DTB_DIR "bcm2708-rpi-b.dtb",
 		true,
 	},
 	[0x10] = {
 		"Model B+",
-		DTB_DIR "bcm2835-rpi-b-plus.dtb",
+		DTB_DIR "bcm2708-rpi-b-plus.dtb",
 		true,
 	},
 	[0x11] = {
@@ -180,7 +180,7 @@ static const struct rpi_model rpi_models_old_scheme[] = {
 	},
 	[0x13] = {
 		"Model B+",
-		DTB_DIR "bcm2835-rpi-b-plus.dtb",
+		DTB_DIR "bcm2708-rpi-b-plus.dtb",
 		true,
 	},
 	[0x14] = {
