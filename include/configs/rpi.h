@@ -76,9 +76,30 @@
 
 /* Console configuration */
 #define CONFIG_SYS_CBSIZE		1024
+#define CONFIG_SYS_MAXARGS      24
 
 /* Environment */
 #define CONFIG_SYS_LOAD_ADDR		0x1000000
+
+/*
+ * UpdateHub configuration
+ */
+
+#define UPDATEHUB_LOAD_OS_A     "load mmc 0:2 ${kernel_addr_r} /boot/uImage; " \
+                                "fdt addr ${fdt_addr} && " \
+                                "fdt get value bootargs_dtb /chosen bootargs"
+#define UPDATEHUB_FIND_ROOT_A   "part uuid mmc 0:2 uuid"
+
+#define UPDATEHUB_LOAD_OS_B     "load mmc 0:3 ${kernel_addr_r} /boot/uImage; " \
+                                "fdt addr ${fdt_addr} && " \
+                                "fdt get value bootargs_dtb /chosen bootargs"
+#define UPDATEHUB_FIND_ROOT_B   "part uuid mmc 0:3 uuid"
+
+#define UPDATEHUB_BOOTARGS      "${bootargs_dtb} root=PARTUUID=${uuid} rw " \
+                                "kgdboc=serial0"
+#define UPDATEHUB_BOOTCMD       "bootm ${kernel_addr_r} - ${fdt_addr}"
+
+#include <configs/updatehub-common.h>
 
 /* Shell */
 
@@ -186,10 +207,9 @@
 #include <config_distro_bootcmd.h>
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
-	"dhcpuboot=usb start; dhcp u-boot.uimg; bootm\0" \
 	ENV_DEVICE_SETTINGS \
 	ENV_MEM_LAYOUT_SETTINGS \
-	BOOTENV
+	UPDATEHUB_ENV
 
 
 #endif
