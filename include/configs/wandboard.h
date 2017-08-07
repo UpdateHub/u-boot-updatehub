@@ -135,6 +135,80 @@
 
 #include <config_distro_bootcmd.h>
 
+/*
+ * UpdateHub configuration
+ */
+
+#define CONFIG_BOOTCOUNT_ENV
+
+/* Environment */
+#define UPDATEHUB_LOAD_OS_A     "load mmc 0:1 ${loadaddr} /boot/${image}; " \
+                                "run findfdt;run videoargs;" \
+                                "load mmc 0:1 ${fdt_addr} /boot/${fdtfile}; "
+#define UPDATEHUB_FIND_ROOT_A   "part uuid mmc 0:1 uuid"
+
+#define UPDATEHUB_LOAD_OS_B     "load mmc 0:2 ${loadaddr} /boot/${image}; " \
+                                "run findfdt;run videoargs;" \
+                                "load mmc 0:2 ${fdt_addr} /boot/${fdtfile}; "
+#define UPDATEHUB_FIND_ROOT_B   "part uuid mmc 0:2 uuid"
+
+#define UPDATEHUB_BOOTARGS      "root=PARTUUID=${uuid} rootfstype=ext4 " \
+                                "rootwait rw console=${console},${baudrate} " \
+                                "${video_args}"
+#define UPDATEHUB_BOOTCMD       "bootz ${loadaddr} - ${fdt_addr}"
+
+#include <configs/updatehub-common.h>
+
+#undef CONFIG_EXTRA_ENV_SETTINGS
+#define CONFIG_EXTRA_ENV_SETTINGS \
+	"console=ttymxc0\0" \
+	"splashpos=m,m\0" \
+	"fdtfile=undefined\0" \
+	"fdt_high=0xffffffff\0" \
+	"initrd_high=0xffffffff\0" \
+	"fdt_addr_r=0x18000000\0" \
+	"fdt_addr=0x18000000\0" \
+	"ip_dyn=yes\0" \
+	"mmcdev=" __stringify(CONFIG_SYS_MMC_ENV_DEV) "\0" \
+	"finduuid=part uuid mmc 0:1 uuid\0" \
+	"update_sd_firmware_filename=u-boot.imx\0" \
+	"update_sd_firmware=" \
+		"if test ${ip_dyn} = yes; then " \
+			"setenv get_cmd dhcp; " \
+		"else " \
+			"setenv get_cmd tftp; " \
+		"fi; " \
+		"if mmc dev ${mmcdev}; then "	\
+			"if ${get_cmd} ${update_sd_firmware_filename}; then " \
+				"setexpr fw_sz ${filesize} / 0x200; " \
+				"setexpr fw_sz ${fw_sz} + 1; "	\
+				"mmc write ${loadaddr} 0x2 ${fw_sz}; " \
+			"fi; "	\
+		"fi\0" \
+	"findfdt="\
+		"if test $board_name = D1 && test $board_rev = MX6QP ; then " \
+			"setenv fdtfile imx6qp-wandboard-revd1.dtb; fi; " \
+		"if test $board_name = D1 && test $board_rev = MX6Q ; then " \
+			"setenv fdtfile imx6q-wandboard-revd1.dtb; fi; " \
+		"if test $board_name = D1 && test $board_rev = MX6DL ; then " \
+			"setenv fdtfile imx6dl-wandboard-revd1.dtb; fi; " \
+		"if test $board_name = C1 && test $board_rev = MX6Q ; then " \
+			"setenv fdtfile imx6q-wandboard.dtb; fi; " \
+		"if test $board_name = C1 && test $board_rev = MX6DL ; then " \
+			"setenv fdtfile imx6dl-wandboard.dtb; fi; " \
+		"if test $board_name = B1 && test $board_rev = MX6Q ; then " \
+			"setenv fdtfile imx6q-wandboard-revb1.dtb; fi; " \
+		"if test $board_name = B1 && test $board_rev = MX6DL ; then " \
+			"setenv fdtfile imx6dl-wandboard-revb1.dtb; fi; " \
+		"if test $fdtfile = undefined; then " \
+			"echo WARNING: Could not determine dtb to use; fi; \0" \
+	"kernel_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
+	"pxefile_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
+	"ramdisk_addr_r=0x13000000\0" \
+	"ramdiskaddr=0x13000000\0" \
+	"scriptaddr=" __stringify(CONFIG_LOADADDR) "\0" \
+    UPDATEHUB_ENV
+
 /* Physical Memory Map */
 #define PHYS_SDRAM			MMDC0_ARB_BASE_ADDR
 
