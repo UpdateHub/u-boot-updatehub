@@ -175,6 +175,56 @@
 	BOOTENV
 #endif
 
+/*
+ * UpdateHub configuration
+ */
+
+/* Environment */
+#define UPDATEHUB_LOAD_OS_A     "load mmc 0:2 ${loadaddr} /boot/${bootfile}; " \
+                                "run findfdt; " \
+                                "load mmc 0:2 ${fdtaddr} /boot/${fdtfile} "
+#define UPDATEHUB_FIND_ROOT_A   "part uuid mmc 0:2 uuid"
+
+#define UPDATEHUB_LOAD_OS_B     "load mmc 0:3 ${loadaddr} /boot/${bootfile}; " \
+                                "run findfdt; " \
+                                "load mmc 0:3 ${fdtaddr} /boot/${fdtfile} "
+#define UPDATEHUB_FIND_ROOT_B   "part uuid mmc 0:3 uuid"
+
+#define UPDATEHUB_BOOTARGS      "console=${console} root=PARTUUID=${uuid} " \
+                                "rootfstype=ext4 rootwait rw "
+#define UPDATEHUB_BOOTCMD       "bootz ${loadaddr} - ${fdtaddr}"
+
+#include <configs/updatehub-common.h>
+
+#undef CONFIG_EXTRA_ENV_SETTINGS
+#define CONFIG_EXTRA_ENV_SETTINGS \
+	DEFAULT_LINUX_BOOT_ENV \
+	"bootfile=zImage\0" \
+	"fdtfile=undefined\0" \
+	"console=ttyO0,115200n8\0" \
+	"findfdt="\
+		"if test $board_name = A335BONE; then " \
+			"setenv fdtfile am335x-bone.dtb; fi; " \
+		"if test $board_name = A335BNLT; then " \
+			"setenv fdtfile am335x-boneblack.dtb; fi; " \
+		"if test $board_name = BBBW; then " \
+			"setenv fdtfile am335x-boneblack-wireless.dtb; fi; " \
+		"if test $board_name = BBG1; then " \
+			"setenv fdtfile am335x-bonegreen.dtb; fi; " \
+		"if test $board_name = BBGW; then " \
+			"setenv fdtfile am335x-bonegreen-wireless.dtb; fi; " \
+		"if test $board_name = BBBL; then " \
+			"setenv fdtfile am335x-boneblue.dtb; fi; " \
+		"if test $board_name = A33515BB; then " \
+			"setenv fdtfile am335x-evm.dtb; fi; " \
+		"if test $board_name = A335X_SK; then " \
+			"setenv fdtfile am335x-evmsk.dtb; fi; " \
+		"if test $board_name = A335_ICE; then " \
+			"setenv fdtfile am335x-icev2.dtb; fi; " \
+		"if test $fdtfile = undefined; then " \
+			"echo WARNING: Could not determine device tree to use; fi; \0" \
+	UPDATEHUB_ENV
+
 /* NS16550 Configuration */
 #define CONFIG_SYS_NS16550_COM1		0x44e09000	/* Base EVM has UART0 */
 #define CONFIG_SYS_NS16550_COM2		0x48022000	/* UART1 */
