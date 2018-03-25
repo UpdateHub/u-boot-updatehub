@@ -38,7 +38,7 @@
             "setenv updatehub_active 1; " \
         "else " \
             "echo Bootcount limit reached. Reverting to image A; " \
-            "setenv updatehub_active 1; " \
+            "setenv updatehub_active 0; " \
         "fi; " \
         "setenv upgrade_available 0; " \
         "saveenv;\0" \
