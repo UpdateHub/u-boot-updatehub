@@ -98,6 +98,52 @@
 
 #include <config_distro_bootcmd.h>
 
+/*
+ * UpdateHub configuration
+ */
+
+#undef CONFIG_BOOTCOMMAND
+
+/* Environment */
+#define UPDATEHUB_LOAD_OS_A     "load mmc 0:1 ${loadaddr} /boot/${image}; " \
+                                "load mmc 0:1 ${fdt_addr} /boot/${fdt_file}; "
+#define UPDATEHUB_FIND_ROOT_A   "part uuid mmc 0:1 uuid"
+
+#define UPDATEHUB_LOAD_OS_B     "load mmc 0:2 ${loadaddr} /boot/${image}; " \
+                                "load mmc 0:2 ${fdt_addr} /boot/${fdt_file}; "
+#define UPDATEHUB_FIND_ROOT_B   "part uuid mmc 0:2 uuid"
+
+#define UPDATEHUB_BOOTARGS      "root=PARTUUID=${uuid} rootfstype=ext4 " \
+                                "rootwait rw console=${console},${baudrate} "
+#define UPDATEHUB_BOOTCMD		"bootz ${loadaddr} - ${fdt_addr}"
+
+#include <configs/updatehub-common.h>
+
+#undef CONFIG_EXTRA_ENV_SETTINGS
+#define CONFIG_EXTRA_ENV_SETTINGS \
+	"script=boot.scr\0" \
+	"image=zImage\0" \
+	"console=ttymxc4\0" \
+	"fdt_high=0xffffffff\0" \
+	"initrd_high=0xffffffff\0" \
+	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0" \
+	BOOTMENU_ENV \
+	"fdt_addr=0x83000000\0" \
+	"fdt_addr_r=0x83000000\0" \
+	"kernel_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
+	"pxefile_addr_r=" __stringify(CONFIG_LOADADDR) "\0" \
+	"ramdisk_addr_r=0x83000000\0" \
+	"ramdiskaddr=0x83000000\0" \
+	"scriptaddr=" __stringify(CONFIG_LOADADDR) "\0" \
+	CONFIG_DFU_ENV_SETTINGS \
+	"findfdt=" \
+		"if test $fdtfile = ask ; then " \
+			"bootmenu -1; fi;" \
+		"if test $fdtfile != ask ; then " \
+			"saveenv; fi;\0" \
+	UPDATEHUB_ENV
+
+
 #define CONFIG_SYS_MEMTEST_START	0x80000000
 #define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_MEMTEST_START + 0x20000000)
 
