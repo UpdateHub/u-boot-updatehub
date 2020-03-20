@@ -76,7 +76,7 @@
 
 /* Console configuration */
 #define CONFIG_SYS_CBSIZE		1024
-#define CONFIG_SYS_MAXARGS      24
+#define CONFIG_SYS_MAXARGS		48
 
 /* Environment */
 #define CONFIG_SYS_LOAD_ADDR		0x1000000
